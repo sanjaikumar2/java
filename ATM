@@ -1,0 +1,89 @@
+import java.util.Scanner;
+
+public class ATMMachine {
+
+    private static Scanner scanner = new Scanner(System.in);
+
+    private static int pin = 1234;
+    private static double balance = 1000.0;
+
+    public static void main(String[] args) {
+        // Welcome message
+        System.out.println("Welcome to the ATM Machine!");
+
+        // Get user input for PIN
+        System.out.print("Enter your PIN: ");
+        int enteredPin = scanner.nextInt();
+
+        // Check PIN
+        if (enteredPin == pin) {
+            int choice = 0;
+            while (choice != 4) {
+                // Display menu
+                System.out.println("\n===== ATM Menu =====");
+                System.out.println("1. Check Balance");
+                System.out.println("2. Deposit Money");
+                System.out.println("3. Withdraw Money");
+                System.out.println("4. Exit");
+                System.out.print("Enter your choice: ");
+                
+                // Get user choice and handle invalid input
+                try {
+                    choice = scanner.nextInt();
+                } catch (Exception e) {
+                    System.out.println("Invalid input. Please enter a number between 1 and 4.");
+                    scanner.next(); // Clear the invalid input
+                    continue;
+                }
+
+                // Perform selected operation
+                switch (choice) {
+                    case 1:
+                        checkBalance();
+                        break;
+                    case 2:
+                        depositMoney();
+                        break;
+                    case 3:
+                        withdrawMoney();
+                        break;
+                    case 4:
+                        System.out.println("Thank you for using the ATM Machine!");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please enter a number between 1 and 4.");
+                }
+            }
+        } else {
+            System.out.println("Incorrect PIN.");
+        }
+    }
+
+    private static void checkBalance() {
+        System.out.printf("Your balance is: $%.2f%n", balance);
+    }
+
+    private static void depositMoney() {
+        System.out.print("Enter the amount to deposit: ");
+        double amount = scanner.nextDouble();
+        if (amount > 0) {
+            balance += amount;
+            System.out.printf("Successfully deposited $%.2f. Your new balance is: $%.2f%n", amount, balance);
+        } else {
+            System.out.println("Invalid amount. Please enter a positive number.");
+        }
+    }
+
+    private static void withdrawMoney() {
+        System.out.print("Enter the amount to withdraw: ");
+        double amount = scanner.nextDouble();
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            System.out.printf("Successfully withdrew $%.2f. Your new balance is: $%.2f%n", amount, balance);
+        } else if (amount > balance) {
+            System.out.println("Insufficient funds.");
+        } else {
+            System.out.println("Invalid amount. Please enter a positive number.");
+        }
+    }
+}
